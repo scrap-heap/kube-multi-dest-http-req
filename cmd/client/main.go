@@ -27,14 +27,21 @@ func main() {
 	}
 
 	// extract only v4 addresses
-	var ipsV4 []net.IP
-	for _, ip := range ips {
-		if ip.To4() == nil {
-			continue
-		}
+	// uncommet if you get ipv6 addresses in lookup
+	// and ipv6 not supported on your hosts
 
-		ipsV4 = append(ipsV4, ip)
-	}
+	// allIPs := make([]net.IP, len(ips))
+	// copy(allIPs, ips)
+
+	// ips = make([]net.IP, 0)
+
+	// for _, ip := range allIPs {
+	// 	if ip.To4() == nil {
+	// 		continue
+	// 	}
+
+	// 	ips = append(ips, ip)
+	// }
 
 	// make request
 	body, err := json.Marshal(map[string]int64{
@@ -45,7 +52,7 @@ func main() {
 	}
 
 	var wg sync.WaitGroup
-	for _, ip := range ipsV4 {
+	for _, ip := range ips {
 		wg.Add(1)
 
 		go func(ip net.IP) {

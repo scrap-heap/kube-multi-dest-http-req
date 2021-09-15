@@ -37,7 +37,7 @@ spec:
         - :80
         command:
         - /server
-        image: preved911/kube-multi-dest-http-req:1631743898
+        image: preved911/kube-multi-dest-http-req:1631745314
         name: kube-multi-dest-http-req
         ports:
         - containerPort: 80
@@ -63,5 +63,5 @@ spec:
         - kube-multi-dest-http-req-server.default.svc
         command:
         - /client
-        image: preved911/kube-multi-dest-http-req:1631743898
+        image: preved911/kube-multi-dest-http-req:1631745314
         name: kube-multi-dest-http-req
