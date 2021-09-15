@@ -1,0 +1,67 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kube-multi-dest-http-req-server
+  name: kube-multi-dest-http-req-server
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: kube-multi-dest-http-req-server
+  sessionAffinity: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kube-multi-dest-http-req-server
+  name: kube-multi-dest-http-req-server
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: kube-multi-dest-http-req-server
+  template:
+    metadata:
+      labels:
+        app: kube-multi-dest-http-req-server
+    spec:
+      containers:
+      - args:
+        - :80
+        command:
+        - /server
+        image: preved911/kube-multi-dest-http-req:1631743898
+        name: kube-multi-dest-http-req
+        ports:
+        - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kube-multi-dest-http-req-client
+  name: kube-multi-dest-http-req-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-multi-dest-http-req-client
+  template:
+    metadata:
+      labels:
+        app: kube-multi-dest-http-req-client
+    spec:
+      containers:
+      - args:
+        - kube-multi-dest-http-req-server.default.svc
+        command:
+        - /client
+        image: preved911/kube-multi-dest-http-req:1631743898
+        name: kube-multi-dest-http-req
